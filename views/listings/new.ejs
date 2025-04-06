@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="row">
+        <div class="col-8 offset-2">
+
+            <br><br>
+    <h3>Create a new Listing</h3>
+    <form action="/listings" method="POST" novalidate class="needs-validation">
+        
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="listing[title]" placeholder="Enter title" class="form-control" required>
+            <div class="valid-feedback">Title looks good!</div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" placeholder="Enter description" class="form-control" required></textarea>
+            <div class="invalid-feedback">Description should be valide </div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">image URL/Link</label>   
+            <input type="text" name="listing[image]" placeholder="Enter image URL/Link" class="form-control ">
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-5">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" name="listing[price]" placeholder="Enter price" class="form-control" required>   
+                <div class="invalid-feedback">Price should be valide </div>
+            </div>
+            <div class="mb-3 col-md-7">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="listing[location]" placeholder="Enter location" class="form-control" autocomplete="off" required>
+                <div class="invalid-feedback">Location should be valide </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" autocomplete="off" required>
+            <div class="invalid-feedback">Country name should be valide </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-dark add-btn">Add</button>
+        <br><br>
+    </form>
+</div>
+</div>
+</body>
+</html>
