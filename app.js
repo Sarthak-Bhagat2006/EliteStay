@@ -9,6 +9,8 @@ const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
 const {listingSchema , reviewSchema} = require("./schema");
 const Review = require("./Models/reviews");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listing");
 const reviews = require("./routes/reviews");
@@ -35,8 +37,28 @@ app.get("/", (req, res) => {
     res.send("working");
 });
 
+const sessionOption = {
+    secret : "mySuperSecreteString",
+    resave: false,
+    saveUninitialized : true,
+    cookie:{
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge:  7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    }
+};
 
+app.use(session(sessionOption));
+app.use(flash());
 
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    next();
+})
+app.use((req,res,next)=>{
+    res.locals.error = req.flash("error");
+    next();
+})
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
