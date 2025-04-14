@@ -1,40 +1,45 @@
 <% layout("/layouts/boilerplate") %>
 <body>
-    <div class="col-8 offset-4">
+    <div class="col-6 offset-3">
         <br>
         
         <h3><%= listing.title %></h3>
     </div>
 
-    <div class="card col-6 offset-4" style="width: 20rem;">
+    <div class="card col-6 offset-3" style="width: 40rem;">
         <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
         <div class="card-body">
-            <p class="card-text">
-                <br>
-                <%= listing.description %> <br>
-                &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / Night <br>
-                <%= listing.location %> <br>
-                <%= listing.country %> <br>
-            </p>
+            <p class="card-text"><i> Owned by <%= listing.owner.username %></i></p>
+             
+                <p><%= listing.description %></p>
+                <p>&#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / Night</p> 
+                <p><%= listing.location %> </p>
+            <p><%= listing.country %></p>
+            
         </div>
     </div> 
     
     <br>
 
     <!-- Buttons Side by Side -->
-    <div class="d-flex gap-3 offset-4">
-        <form action="/listings/<%= listing._id %>/edit" method="GET">
+    <div class="d-flex gap-3 offset-3">
+       <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
+        <form action="/listings/<%= listing._id %>/edit" method="GET"></form>
             <button type="submit" class="btn btn-dark add-btn">Edit </button>
         </form>
         
         <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
             <button type="submit" class="btn btn-dark delete-btn">Delete</button>
         </form>
+       <% } %> 
+        
     </div>
-    <div class="col-8 offset-4">
+    <div class="col-6 offset-3">
+       
+        
+       <%  if(currUser){ %>
         <hr>
         <h4>Leave us review</h4>
-        
         <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
   
             <label for="rating" class="form-label">Rating</label>
@@ -50,6 +55,8 @@
           
             <button class="btn btn-outline-dark" type="submit">Submit</button>
           </form>
+        <% } %>
+        
         <br>
         <hr>
         <p><b>All Reviews</b></p>
@@ -57,12 +64,12 @@
         <% for (const review of listing.reviews) { %>
         <div class="card col-5 ms-3 mb-3" >
             <div class="card-body">
-                <h5 class="card-title">Alex Doe</h5>
+                <h5 class="card-title">@<%= review.author.username %></h5>
                 
                 <p class="card-text"><%= review.comment %></p>
                 <p class="card-text"><%= review.rating %> Stars</p>
             </div>
-            <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="mb-3">
+            <form method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="mb-3">
                 <button type="submit" class="btn btn-sm btn-dark">Delete</button>
             </form>
         </div>

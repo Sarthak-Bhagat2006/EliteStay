@@ -4,7 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");
 const Listing = require("../Models/listing");
 const ExpressError = require("../utils/ExpressError");
 const {listingSchema , reviewSchema} = require("../schema");
-const {isLoggedIn} = require("../middlewares");
+const {isLoggedIn, isOwner} = require("../middlewares");
 
 
 const validateListing = (req,res,next) =>{
@@ -44,6 +44,7 @@ router.post("/",isLoggedIn,
      wrapAsync(async (req, res,next) => {
         
         const newListing = new Listing(req.body.listing);
+        newListing.owner = req.user._id;
         await newListing.save();
         req.flash("success","New Listing Created!");
         res.redirect("/listings");
@@ -53,7 +54,7 @@ router.post("/",isLoggedIn,
 
 
 // EDIT ROUTE
-router.get("/:id/edit",isLoggedIn,
+router.get("/:id/edit",isLoggedIn,isOwner,
     wrapAsync (async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
@@ -61,23 +62,24 @@ router.get("/:id/edit",isLoggedIn,
 })
 );
 // UPDATE route
-router.put("/:id",isLoggedIn,
+router.put("/:id",isLoggedIn,isOwner,
     wrapAsync ( async (req,res)=>{
         if(!req.body.listing){
             throw new ExpressError(400,"send valid data for listing");
         }
     let {id} = req.params;
+    
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     req.flash("success"," Listing Updated!");
 
-    res.redirect(`/listings`);
+    res.redirect(`/listing/${id}`);
 })
 );
 
 //DELETE route
 
 
-router.delete("/:id",isLoggedIn,
+router.delete("/:id",isLoggedIn,isOwner,
     wrapAsync (async (req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
@@ -91,7 +93,8 @@ router.delete("/:id",isLoggedIn,
 router.get("/:id",
     wrapAsync ( async (req, res) => {
    let { id } = req.params;
-   const listing = await Listing.findById(id).populate("reviews");
+   const listing = await Listing.findById(id).populate({
+    path :"reviews",populate:{path: "author"}}).populate("owner");
    if(!listing){
     req.flash("error","Listing is not available");
     res.redirect("/listings");
