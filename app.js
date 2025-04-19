@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV != "production"){
+  require('dotenv').config()
+}
+console.log(process.env);
+
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -17,7 +23,7 @@ const reviews = require("./routes/reviews");
 const users = require("./routes/users");
 const User = require("./Models/user")
 const passport = require("passport");
-const LocalStrategy = require("passport-local")
+const LocalStrategy = require("passport-local") 
 
 
 
@@ -38,9 +44,7 @@ app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
 
-app.get("/", (req, res) => {
-    res.send("working");
-});
+
 
 const sessionOption = {
     secret : "mySuperSecreteString",
@@ -77,6 +81,8 @@ app.use((req,res,next)=>{
 })
 
 
+
+
 // app.get("/demo",async (req,res)=>{
 //     let fakeUser = new User({
 //         email: "sarthak@gmail.com",
@@ -89,6 +95,7 @@ app.use((req,res,next)=>{
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
 app.use("/",users);
+
 
 
 app.all("*", (req, res, next) => {

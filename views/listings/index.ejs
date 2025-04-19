@@ -1,15 +1,42 @@
 <% layout("/layouts/boilerplate") %>
 <body>
   <%= success %>
-    <h3>All Listings</h3>
+   
     <!-- <form action="listings/new" method="GET">
         <button>reate new listing</button>
     </form> -->
+    <style>
+      #filters{
+        display: flex;
+        flex-wrap: wrap
+      }
+
+      .filter{
+        text-align: center;
+        margin: 1rem;
+        opacity: 0.7;
+      }
+      .filter:hover{
+        opacity: 1;
+        cursor: pointer;
+        text-decoration: underline ;
+      }
+    </style>
+    <div id="filters">
+      <div class="filter">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </div>
+    </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
         <% for(let listing of allListings){ %>
             <a href="/listings/<%= listing._id %>">
             <div class="card col card-listing" >
-                <img src="<%= listing.image %>" class="card-img-top" alt="listing_image" style="height: 20rem;"/>
+                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;"/>
                 <div class="card-img-overlay"></div>
                 <div class="card-body">
                   <p class="card-text">
