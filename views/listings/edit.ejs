@@ -37,9 +37,28 @@
             </div>
         </div>
         
-        <div class="mb-3">
-            <label for="location" class="form-label">Country</label>
-            <input class="form-control" type="text" name="listing[country]" value="<%= listing.country %> required">
+        <div class="row">
+            <div class="mb-3 col-md-5">
+                <label for="country" class="form-label">Category</label>
+                <select class="form-select" aria-label="Default select example" name="listing[category]" value="<%= listing.category %>" required>
+                    <option value="" disabled selected>Choose Category</option>
+                    <option value="Rooms">Rooms</option>
+                    <option value="Mountains">Mountains</option>
+                    <option value="Iconic Cities">Iconic Cities</option>
+                    <option value="Castles">Castles</option>
+                    <option value="Beach">Beach</option>
+                    <option value="Arctic">Arctic</option>
+                    <option value="Camping">Camping</option>
+                    <option value="Farms">Farms</option>
+                  </select>
+                    <div class="invalid-feedback">Category should be selected </div>
+            </div>
+    
+            <div class="mb-3 col-md-7">
+                <label for="country" class="form-label">Country</label>
+                    <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" autocomplete="off" value="<%= listing.country  %>" required>
+                    <div class="invalid-feedback">Country should be valide </div>
+            </div>
         </div>
         <div class="invalid-feedback">Country name should be valide </div>
         <br>

@@ -1,16 +1,31 @@
 const Listing = require("../Models/listing");
 
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
+    let filter = req.query.category;
+    if(filter == null || filter == "Trending"){
+        const allListings = await Listing.find({});
     
-    // Ensure all listings have a valid price
-    allListings.forEach(listing => {
-        if (listing.price === undefined || listing.price === null) {
-            listing.price = 0;  // Default to 0 if price is missing
-        }
-    });
+        // Ensure all listings have a valid price
+        allListings.forEach(listing => {
+            if (listing.price === undefined || listing.price === null) {
+                listing.price = 0;  // Default to 0 if price is missing
+            }
+        });
+    
+        res.render("listings/index", { allListings });
+    }
+    else{
+        const allListings = await Listing.find({category: filter})
+        allListings.forEach(listing => {
+            if (listing.price === undefined || listing.price === null) {
+                listing.price = 0;  // Default to 0 if price is missing
+            }
+        });
+    
+        res.render("listings/index", { allListings });
+    }
 
-    res.render("listings/index", { allListings });
+    
 }
 
 module.exports.new =  (req, res) => {
