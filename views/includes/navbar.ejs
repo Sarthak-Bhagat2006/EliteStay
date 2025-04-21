@@ -31,9 +31,44 @@
         
         <a class="nav-link" href="/listings">Explore</a>
       </div>
+      
       <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-          <input class="search-input form-control me-2" type="search" placeholder="Search destination" aria-label="Search">
+        <div class="dropdown ms-auto">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Country
+          </button>
+          <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/listings?search=India">India</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Italy">Italy</a></li>
+              <li><a class="dropdown-item" href="/listings?search=France">France</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Spain">Spain</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Thailand">Thailand</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Japan">Japan</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Indonesia">Indonesia</a></li>
+             
+              <li><a class="dropdown-item" href="/listings?search=Switzerland">Switzerland</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Maldives">Maldives</a></li>
+              <li><a class="dropdown-item" href="/listings?search=United Arab Emirates">United Arab Emirates</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Bali">Bali</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Vietnam">Vietnam</a></li>
+              
+              <li><a class="dropdown-item" href="/listings?search=Australia">Australia</a></li>
+              <li><a class="dropdown-item" href="/listings?search=New Zealand">New Zealand</a></li>
+              
+              <li><a class="dropdown-item" href="/listings?search=South Africa">South Africa</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Brazil">Brazil</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Egypt">Egypt</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Sri Lanka">Sri Lanka</a></li>
+              <li><a class="dropdown-item" href="/listings?search=United States">United States</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Canada">Canada</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Iceland">Iceland</a></li>
+              <li><a class="dropdown-item" href="/listings?search=Austria">Austria</a></li>
+              
+              <li><a class="dropdown-item" href="/listings?search=Singapore">Singapore</a></li>
+          </ul>
+        </div>
+        <form method="GET" class="d-flex" role="search">
+          <input class="search-input form-control me-2" type="search" name="search" placeholder="Search destination" aria-label="Search">
           <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search </i></button>
         </form>
       </div>

@@ -1,32 +1,36 @@
 const Listing = require("../Models/listing");
 
 module.exports.index = async (req, res) => {
-    let filter = req.query.category;
-    if(filter == null || filter == "Trending"){
-        const allListings = await Listing.find({});
-    
-        // Ensure all listings have a valid price
-        allListings.forEach(listing => {
-            if (listing.price === undefined || listing.price === null) {
-                listing.price = 0;  // Default to 0 if price is missing
-            }
-        });
-    
-        res.render("listings/index", { allListings });
-    }
-    else{
-        const allListings = await Listing.find({category: filter})
-        allListings.forEach(listing => {
-            if (listing.price === undefined || listing.price === null) {
-                listing.price = 0;  // Default to 0 if price is missing
-            }
-        });
-    
-        res.render("listings/index", { allListings });
+    const { category, search } = req.query;
+
+    // Start with an empty query object
+    let query = {};
+
+    // Add search condition if present
+    if (search) {
+        const regex = new RegExp(search, 'i'); // case-insensitive
+        query.country = { $regex: regex };
+        
     }
 
-    
-}
+    // Add category filter if it's not "Trending" or null
+    if (category && category !== "Trending") {
+        query.category = category;
+    }
+
+    // Fetch listings based on combined query
+    let allListings = await Listing.find(query);
+
+    // Ensure all listings have a valid price
+    allListings.forEach(listing => {
+        if (listing.price === undefined || listing.price === null) {
+            listing.price = 0;
+        }
+    });
+
+    // Render the final result
+    res.render("listings/index", { allListings });
+};
 
 module.exports.new =  (req, res) => {
     
