@@ -1,5 +1,8 @@
 const Listing = require("../Models/listing");
 
+const axios = require('axios');
+const locationIQToken = process.env.MAP_TOKEN;
+
 module.exports.index = async (req, res) => {
     const { category, search } = req.query;
 
@@ -37,17 +40,39 @@ module.exports.new =  (req, res) => {
     res.render("listings/new");
 }
 
-module.exports.create = async (req, res,next) => {
+module.exports.create = async (req, res, next) => {
+    try {
+      // Geocode 'New Delhi, India' using LocationIQ
+      const response = await axios.get(`https://us1.locationiq.com/v1/search.php`, {
+        params: {
+          key: locationIQToken,  // Your LocationIQ API token
+          q: req.body.listing.location, // The query (address)
+          format: 'json',        // The desired format (JSON)
+          limit: 1               // Limit to 1 result
+        }
+      });
+  
+      // Log the response
+    const location = response.data[0];  // First result
+    const geomatry = [location.lon, location.lat];  // Longitude, Latitude (correct order)
+
+    
     let url = req.file.path;
     let filename = req.file.filename;    
     
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = {url, filename}
-    await newListing.save();
+    newListing.coordinates = geomatry;
+    let saved = await newListing.save();
+    console.log(saved)
     req.flash("success","New Listing Created!");
     res.redirect("/listings");
     
+} catch (error) {
+    console.error('Error during geocoding:', error);
+    res.status(500).send('Error during geocoding');
+}
 
 }
 

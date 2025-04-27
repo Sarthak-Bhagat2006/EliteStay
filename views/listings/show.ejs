@@ -1,4 +1,10 @@
 <% layout("/layouts/boilerplate") %>
+<script>
+    // Add your LocationIQ Maps Access Token here (not the API token!)
+    let mapToken = "<%= process.env.MAP_TOKEN %>";
+    let coordinates = <%- JSON.stringify(listing.coordinates) %>;
+    
+</script>
 <body>
     <div class="col-6 offset-3">
         <br>
@@ -73,8 +79,10 @@
         
         <br>
         <hr>
-        <p><b>All Reviews</b></p>
+        <% if(listing.reviews.length > 0 )  {%>
         <div class="row">
+            
+            <p><b>All Reviews</b></p>
         <% for (const review of listing.reviews) { %>
         <div class="card col-5 ms-3 mb-3" >
             <div class="card-body">
@@ -92,7 +100,24 @@
     
     <% } %>
 </div>
+<% } %>
+<div class="col-6"></div>
+    <h3>Where you'll be</h3>
+    <div id="map" style="height: 400px;"></div>
+
+    <div class="lang-switcher" style="margin-top: 10px;">
+        <label for="lang-options">Language:</label>
+        <select name="lang" id="lang-options">
+            <option value="en" selected>English</option>
+            
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <option value="zh">Chinese</option>
+        </select>
+    </div>
 </div>
+
+<script src="/js/map.js"></script>
 </body>
 </html>
 
